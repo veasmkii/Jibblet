@@ -2,16 +2,9 @@
 <project name="Jibblet" default="makejar" basedir=".">
 	<target name ="makejar" description="Creates the Jibblet project">
 		<jar jarfile="Jibblet.jar" includes="*.class" basedir="bin">
-			<manifest file="MANIFEST.MF">
-				<attribute name="Main-class" value="com.veasmkii.jib.RunJIB"/>
-				<attribute name="Built-By" value="${user.name}"/>
-				<section name="common">
-					<attribute name="Specification-Title" value="Example"/>
-					<attribute name="Specification-Version" value="${version}"/>
-					<attribute name="Implementation-Title" value="common"/>
-					<attribute name="Implementation-Version" value="${version} ${TODAY}"/>
-				</section>
-			</manifest>
+            <manifest>
+                <attribute name="Main-Class" value="com.veasmkii.jib.RunJIB"/>
+            </manifest>
 		</jar>
 	</target>
 </project>
