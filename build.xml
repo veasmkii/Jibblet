@@ -10,7 +10,8 @@
         <javac srcdir="src" destdir="build/classes"/>
     </target>
         	
-	<target name ="makejar" description="Creates the Jibblet project">
+	<target name ="makejar" description="Creates the Jibblet project" depends="compile">
+        <mkdir dir="bin"/>
 		<jar jarfile="Jibblet.jar" includes="*.class" basedir="bin">
             <manifest>
                 <attribute name="Main-Class" value="com.veasmkii.jib.RunJIB"/>
