@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Jibblet" default="makejar" basedir=".">
+  <target name ="makejar" description="Creates the Jibblet project">
+    <jar jarfile="Jibblet.jar" includes="*.class" basedir="bin"/>
+  </target>
+</project>
