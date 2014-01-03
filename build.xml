@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Jibblet" default="makejar" basedir=".">
+	
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes"/>
+    </target>
+        	
 	<target name ="makejar" description="Creates the Jibblet project">
 		<jar jarfile="Jibblet.jar" includes="*.class" basedir="bin">
             <manifest>
