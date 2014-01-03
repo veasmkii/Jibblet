@@ -15,101 +15,75 @@ import com.veasmkii.jib.tree.node.Channel;
 import com.veasmkii.jib.tree.node.Server;
 import com.veasmkii.jib.utils.Utils;
 
-public class Connection extends SwingWorker<String, String>
-{
+public class Connection extends SwingWorker<String, String> {
 	private Socket socket = null;
 	private BufferedWriter writer = null;
 	private BufferedReader reader = null;
 
-	private Server server;
-	private Login login;
+	private final Server server;
+	private final Login login;
 
 	private String quitMessage;
 
 	private JTextArea textArea;
 
-	public Connection( final Server server, final Login login )
-	{
+	public Connection( final Server server, final Login login ) {
 		this.server = server;
 		this.login = login;
 	}
 
-	public void setQuitMessage( final String quitMessage )
-	{
+	public void setQuitMessage( final String quitMessage ) {
 		this.quitMessage = quitMessage;
 	}
 
-	public void setTextArea( final JTextArea textArea )
-	{
+	public void setTextArea( final JTextArea textArea ) {
 		this.textArea = textArea;
 	}
 
-	public void login()
-	{
-		try
-		{
+	public void login() {
+		try {
 			socket = new Socket( server.getName(), server.getPort() );
 			writer = new BufferedWriter( new OutputStreamWriter( socket.getOutputStream() ) );
 			reader = new BufferedReader( new InputStreamReader( socket.getInputStream() ) );
 
 			// Login
 			writer.write( "NICK " + login.getNick() + Utils.msgEnd );
-			writer.write( "USER " + login.getLoginName() + " 8 * : " + login.getInfo()
-					+ Utils.msgEnd );
+			writer.write( "USER " + login.getLoginName() + " 8 * : " + login.getInfo() + Utils.msgEnd );
 			writer.flush();
 
 			String line = null;
 			while ( ( line = reader.readLine() ) != null )
-			{
-				if ( line.indexOf( "004" ) >= 0 )
-				{
+				if ( line.indexOf( "004" ) >= 0 ) {
 					append( "004 RPL_MYINFO <Already connected!>" );
 					append( line );
 					break;
-				}
-				else if ( line.indexOf( "433" ) >= 0 )
-				{
+				} else if ( line.indexOf( "433" ) >= 0 ) {
 					append( "433 ERR_NICKNAMEINUSE <Nickname in use!>" );
 					append( line );
 					break;
-				}
-				else
-				{
+				} else
 					append( line );
-				}
-			}
 
-		}
-		catch ( IOException e )
-		{
+		} catch ( final IOException e ) {
 			e.printStackTrace();
 		}
 	}
 
-	public void joinChannel( final Channel channel )
-	{
+	public void joinChannel( final Channel channel ) {
 		write( "JOIN " + channel );
 	}
 
-	private boolean running = true;
+	private final boolean running = true;
 
 	@Override
-	protected String doInBackground() throws Exception
-	{
+	protected String doInBackground() throws Exception {
 		// Thread here
 		String line = null;
-		try
-		{
+		try {
 			while ( running )
-			{
 				if ( ( line = reader.readLine() ) != null )
-				{
 					publish( line );
-				}
-			}
-		}
-		catch ( IOException ioe )
-		{
+		} catch ( final IOException ioe ) {
 			ioe.printStackTrace();
 		}
 
@@ -117,51 +91,38 @@ public class Connection extends SwingWorker<String, String>
 	}
 
 	@Override
-	protected void process( List<String> lines )
-	{
-		for ( String line : lines )
-		{
+	protected void process( final List<String> lines ) {
+		for ( final String line : lines ) {
 			pingResponder( line );
 			append( line );
 		}
 	}
 
-	private void append( final String line )
-	{
+	private void append( final String line ) {
 		System.out.println( "\n" + line );
 		textArea.append( "\n" + line );
 		textArea.setCaretPosition( textArea.getDocument().getLength() );
 	}
 
-	public synchronized void writeMessage( final String message )
-	{
+	public synchronized void writeMessage( final String message ) {
 		write( message );
 	}
 
-	private void write( final String message )
-	{
+	private void write( final String message ) {
 		Utils.write( writer, message );
 		append( message );
 	}
 
-	private void pingResponder( final String line )
-	{
+	private void pingResponder( final String line ) {
 		// Respond to ping
 		if ( line.startsWith( "PING " ) )
-		{
 			write( "PONG " + line.substring( 5 ) );
-		}
 	}
 
-	public void quit()
-	{
+	public void quit() {
 		if ( quitMessage != null )
-		{
 			write( "QUIT :" + quitMessage );
-		}
 		else
-		{
 			write( "QUIT" );
-		}
 	}
 }

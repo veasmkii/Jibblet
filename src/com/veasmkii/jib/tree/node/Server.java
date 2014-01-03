@@ -10,29 +10,26 @@ import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.tree.DefaultTreeModel;
 
 import com.veasmkii.jib.gui.desktop.JibDesktop;
 import com.veasmkii.jib.gui.desktop.JibWindow;
 import com.veasmkii.jib.tree.JibTree;
 import com.veasmkii.jib.utils.Images;
 
-public class Server extends ContextNode
-{
+public class Server extends ContextNode {
 
 	private static final long serialVersionUID = 486955655174083657L;
 
-	private String serverName;
-	private int port;
-	private List<Channel> channels;
+	private final String serverName;
+	private final int port;
+	private final List<Channel> channels;
 
 	private JMenuItem nameItem;
 	private JMenuItem addItem;
 
-	private JibWindow window;
+	private final JibWindow window;
 
-	public Server( final JibDesktop desktop, final String serverName, final int port )
-	{
+	public Server( final JibDesktop desktop, final String serverName, final int port ) {
 		this.serverName = serverName;
 		this.port = port;
 		this.channels = new ArrayList<Channel>();
@@ -42,26 +39,21 @@ public class Server extends ContextNode
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		return serverName;
 	}
 
-	public String getName()
-	{
+	public String getName() {
 		return serverName;
 	}
 
-	public int getPort()
-	{
+	public int getPort() {
 		return port;
 	}
 
 	@Override
-	public JPopupMenu getMenu()
-	{
-		if ( super.menu == null )
-		{
+	public JPopupMenu getMenu() {
+		if ( super.menu == null ) {
 			super.menu = new JPopupMenu();
 			nameItem = new JMenuItem();
 			nameItem.setArmed( false );
@@ -70,60 +62,49 @@ public class Server extends ContextNode
 
 			addItem = new JMenuItem( "Add Channel" );
 			addItem.setIcon( new ImageIcon( Images.ADD.getImage() ) );
-			addItem.addActionListener( new ActionListener()
-			{
+			addItem.addActionListener( new ActionListener() {
 				@Override
-				public void actionPerformed( ActionEvent e )
-				{
+				public void actionPerformed( final ActionEvent e ) {
 					addItemPerformed();
 				}
 			} );
 
 			super.menu.add( addItem );
 		}
-		
-		final List<Object> linkedList = new LinkedList<>();
-		final List<Object> arrayList = new ArrayList<>();
-		
+
+		new LinkedList<>();
+		new ArrayList<>();
 
 		nameItem.setText( serverName );
 
 		return super.menu;
 	}
 
-	private void addItemPerformed()
-	{
+	private void addItemPerformed() {
 		final String channelName = JOptionPane.showInputDialog( null, "Channel Name:" );
 
-		if ( channelName == null || channelName.trim().equalsIgnoreCase( "" ) )
-		{
+		if ( ( channelName == null ) || channelName.trim().equalsIgnoreCase( "" ) )
 			return;
-		}
 
 		final Channel channel = new Channel( channelName );
 
 		channels.add( channel );
 
-		( (DefaultTreeModel) JibTree.treeModel ).insertNodeInto( channel, this,
-				this.getChildCount() );
+		JibTree.treeModel.insertNodeInto( channel, this, this.getChildCount() );
 
 	}
 
 	@Override
-	public JibWindow getWindow()
-	{
+	public JibWindow getWindow() {
 		return window;
 	}
 
 	@Override
-	public void quitting()
-	{
+	public void quitting() {
 		System.out.println( "Server:" + serverName + " quitting." );
-		
-		for ( Channel channel : channels )
-		{
+
+		for ( final Channel channel : channels )
 			channel.quitting();
-		}
 	}
 
 }

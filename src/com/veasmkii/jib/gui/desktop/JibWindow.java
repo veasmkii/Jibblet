@@ -15,25 +15,21 @@ import javax.swing.event.InternalFrameEvent;
 import com.veasmkii.jib.TickerField;
 import com.veasmkii.jib.tree.node.ContextNode;
 
-public class JibWindow extends JInternalFrame
-{
+public class JibWindow extends JInternalFrame {
 
 	private final JScrollPane scrollPane;
 	private final JTextArea textArea;
 	private final JTextField textField;
 	private final TickerField topicField;
 
-	public JibWindow( final ContextNode node, final JibDesktop desktop )
-	{
+	public JibWindow( final ContextNode node, final JibDesktop desktop ) {
 		super( node.toString() );
 
 		desktop.add( this );
 
-		addInternalFrameListener( new InternalFrameAdapter()
-		{
+		addInternalFrameListener( new InternalFrameAdapter() {
 			@Override
-			public void internalFrameClosing( InternalFrameEvent e )
-			{
+			public void internalFrameClosing( final InternalFrameEvent e ) {
 				quitting();
 			}
 		} );
@@ -64,22 +60,16 @@ public class JibWindow extends JInternalFrame
 		this.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
 		this.pack();
 	}
-	
+
 	@Override
-	public void show()
-	{
-		if (super.isShowing())
-		{
+	public void show() {
+		if ( super.isShowing() )
 			super.moveToFront();
-		}
 		else
-		{
 			super.show();
-		}
 	}
 
-	public void quitting()
-	{
+	public void quitting() {
 		topicField.quitting();
 	}
 

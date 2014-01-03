@@ -8,19 +8,18 @@ import javax.swing.WindowConstants;
 import com.veasmkii.jib.gui.JibFrame;
 import com.veasmkii.jib.utils.Images;
 
-public class RunJIB
-{
+public class RunJIB {
 
-	public static void main( String[] args ) throws Exception
-	{
+	public static void main( final String[] args ) throws Exception {
 		UIManager.setLookAndFeel( UIManager.getSystemLookAndFeelClassName() );
 
-		final JibFrame jibFrame = new JibFrame();
-		jibFrame.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
-		jibFrame.setPreferredSize( new Dimension( 800, 600 ) );
-		jibFrame.setIconImage( Images.J.getImage() );
-		jibFrame.pack();
-		jibFrame.setVisible( true );
+		final JibFrame frame = new JibFrame();
+		frame.setDefaultCloseOperation( WindowConstants.DISPOSE_ON_CLOSE );
+		frame.setPreferredSize( new Dimension( 800, 600 ) );
+		frame.setIconImage( Images.JIBBLET.getImage() );
+		frame.pack();
+		frame.setLocationRelativeTo( null );
+		frame.setVisible( true );
 
 	}
 

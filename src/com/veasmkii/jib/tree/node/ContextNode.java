@@ -5,8 +5,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.veasmkii.jib.gui.desktop.JibWindow;
 
-public abstract class ContextNode extends DefaultMutableTreeNode
-{
+public abstract class ContextNode extends DefaultMutableTreeNode {
 
 	private static final long serialVersionUID = 870602535078709343L;
 

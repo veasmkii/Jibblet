@@ -1,5 +1,6 @@
 package com.veasmkii.jib.gui;
 
+import java.awt.Frame;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,8 +16,7 @@ import javax.swing.JOptionPane;
 import com.veasmkii.jib.connection.Connection;
 import com.veasmkii.jib.utils.Resources;
 
-public class JibFrame extends JFrame implements ActionListener
-{
+public class JibFrame extends JFrame implements ActionListener {
 
 	private static final long serialVersionUID = 7955379425076885461L;
 
@@ -25,8 +25,7 @@ public class JibFrame extends JFrame implements ActionListener
 	final JCheckBoxMenuItem expandItem;
 	final JibPanel jibPanel;
 
-	public JibFrame()
-	{
+	public JibFrame() {
 		setTitle( "Jibblet" );
 
 		final JMenuBar menuBar = new JMenuBar();
@@ -38,11 +37,9 @@ public class JibFrame extends JFrame implements ActionListener
 
 			expandItem = new JCheckBoxMenuItem( "Expand" );
 			// expandItem.setSelected( true );
-			expandItem.addActionListener( new ActionListener()
-			{
+			expandItem.addActionListener( new ActionListener() {
 				@Override
-				public void actionPerformed( final ActionEvent e )
-				{
+				public void actionPerformed( final ActionEvent e ) {
 					expandSelectAction();
 				}
 			} );
@@ -85,45 +82,34 @@ public class JibFrame extends JFrame implements ActionListener
 
 	}
 
-	private void expandSelectAction()
-	{
+	private void expandSelectAction() {
 		if ( expandItem.isSelected() )
-		{
-			this.setExtendedState( JFrame.MAXIMIZED_BOTH );
-		}
+			this.setExtendedState( Frame.MAXIMIZED_BOTH );
 		else
-		{
-			this.setExtendedState( JFrame.NORMAL );
-		}
+			this.setExtendedState( Frame.NORMAL );
 	}
 
-	private void attachShutdownHook()
-	{
-		final Thread shutDownHook = new Thread( new Runnable()
-		{
+	private void attachShutdownHook() {
+		final Thread shutDownHook = new Thread( new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				System.out.println( "Shutting down!" );
 				jibPanel.quitting();
 
-				for ( Connection connection : connections )
-				{
+				for ( final Connection connection : connections )
 					connection.quit();
-				}
 			}
 		} );
 		Runtime.getRuntime().addShutdownHook( shutDownHook );
 	}
 
 	@Override
-	public void actionPerformed( ActionEvent actionEvent )
-	{
+	public void actionPerformed( final ActionEvent actionEvent ) {
 
 		final String command = actionEvent.getActionCommand();
 
-		if ( command.equals( Resources.getString( Resources
-				.getString( "JibFrame.JibFrame.exitItemCommand" ) ) ) ) //$NON-NLS-1$
+		if ( command
+				.equals( Resources.getString( Resources.getString( "JibFrame.JibFrame.exitItemCommand" ) ) ) ) //$NON-NLS-1$
 		{
 			//@formatter:off
 			final int option = JOptionPane.showConfirmDialog( this,
@@ -134,9 +120,7 @@ public class JibFrame extends JFrame implements ActionListener
 			//@formatter:on
 
 			if ( option == JOptionPane.YES_OPTION )
-			{
 				this.dispose();
-			}
 		}
 	}
 

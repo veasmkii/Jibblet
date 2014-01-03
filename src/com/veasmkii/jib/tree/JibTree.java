@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JTree;
+import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -15,62 +16,49 @@ import com.veasmkii.jib.tree.node.ContextNode;
 import com.veasmkii.jib.tree.node.Root;
 import com.veasmkii.jib.tree.renderer.JibTreeRenderer;
 
-public final class JibTree extends JTree
-{
+public final class JibTree extends JTree {
 
 	private static final long serialVersionUID = -7991593628626849292L;
 
 	private final Root root;
-	private final JibDesktop desktop;
 	public static DefaultTreeModel treeModel;
 
-	public JibTree( final JibDesktop desktop )
-	{
-		this.desktop = desktop;
+	public JibTree( final JibDesktop desktop ) {
 		this.root = new Root( desktop, "Servers" );
 
 		setupModel();
 		createTree();
-		
+
 		setMinimumSize( new Dimension( 200, getSize().height ) );
 
 	}
 
-	private void setupModel()
-	{
+	private void setupModel() {
 		treeModel = new DefaultTreeModel( root );
 	}
 
-	private void createTree()
-	{
+	private void createTree() {
 		setModel( treeModel );
 
 		setExpandsSelectedPaths( true );
 
 		setCellRenderer( new JibTreeRenderer() );
 
-		addTreeSelectionListener( new TreeSelectionListener()
-		{
+		addTreeSelectionListener( new TreeSelectionListener() {
 			@Override
-			public void valueChanged( TreeSelectionEvent e )
-			{
+			public void valueChanged( final TreeSelectionEvent e ) {
 				System.out.println( "Selection Change" );
 				showWindow();
 			}
 		} );
 
-		addMouseListener( new MouseAdapter()
-		{
+		addMouseListener( new MouseAdapter() {
 			@Override
-			public void mouseClicked( MouseEvent e )
-			{
+			public void mouseClicked( final MouseEvent e ) {
 				if ( e.getClickCount() > 1 )
-				{
 					showWindow();
-				}
 
-				if ( e.getButton() == MouseEvent.BUTTON3 )
-				{
+				if ( SwingUtilities.isMiddleMouseButton( e ) ) {
 					final int x = e.getX(), y = e.getY();
 
 					// Force tree selection
@@ -82,40 +70,30 @@ public final class JibTree extends JTree
 		} );
 	}
 
-	private ContextNode getLastNode()
-	{
+	private ContextNode getLastNode() {
 		final DefaultMutableTreeNode node = (DefaultMutableTreeNode) JibTree.this
 				.getLastSelectedPathComponent();
 
 		if ( node instanceof ContextNode )
-		{
 			return (ContextNode) node;
-		}
 		return null;
 	}
 
-	private void showNodeMenu( int x, int y )
-	{
+	private void showNodeMenu( final int x, final int y ) {
 		final ContextNode lastNode = getLastNode();
 
 		if ( lastNode != null )
-		{
 			lastNode.getMenu().show( this, x, y );
-		}
 	}
 
-	private void showWindow()
-	{
+	private void showWindow() {
 		final ContextNode lastNode = getLastNode();
 
 		if ( lastNode != null )
-		{
 			lastNode.getWindow().show();
-		}
 	}
 
-	public void quitting()
-	{
+	public void quitting() {
 		root.quitting();
 	}
 
