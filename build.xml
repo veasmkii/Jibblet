@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Jibblet" default="makejar" basedir=".">
 	
-    <target name="clean">
-        <delete dir="build"/>
-    </target>
-
     <target name="compile">
-        <mkdir dir="build/classes"/>
-        <javac srcdir="src" destdir="build/classes"/>
+        <echo message="Compiling"/>
+        <mkdir dir="bin"/>
+        <javac srcdir="src" destdir="bin"/>
     </target>
         	
 	<target name ="makejar" description="Creates the Jibblet project" depends="compile">
-		<jar jarfile="Jibblet.jar" includes="*.class" basedir="build/classes">
+	    <echo message="Making Jar"/>
+		<jar jarfile="Jibblet.jar" includes="*.class" basedir="bin">
+		    <echo message="Creating Manifest"/>
             <manifest>
                 <attribute name="Main-Class" value="com.veasmkii.jib.RunJIB"/>
             </manifest>
 		</jar>
 	</target>
+	
+    <target name="clean">
+        <echo message="Cleaning"/>
+        <delete dir="build"/>
+    </target>
+	
 </project>
